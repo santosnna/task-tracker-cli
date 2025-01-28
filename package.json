@@ -1,0 +1,24 @@
+{
+	"name": "taks-manager",
+	"version": "1.0.0",
+	"description": "CLI application to manage tasks. Access to-do list via command line and save changes to a JSON file. Vanilla JavaScript.",
+	"main": "app.js",
+	"scripts": {
+		"start": "node src/app.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [
+		"task",
+		"manager",
+		"cli",
+		"app",
+		"json",
+		"javascript",
+		"file",
+		"system",
+		"testing."
+	],
+	"author": "Nathan Santos",
+	"license": "ISC"
+}
+
