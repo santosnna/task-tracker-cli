@@ -10,27 +10,40 @@ class Repository {
 	getList() {
 		let list = new Array();
 		let data = JSON.parse(fs.readFileSync(this.filePath));
-		data.forEach((element, index) => {
-			let task = new Task();
-			task.id = index;
-			task.description = element.description;
-			task.createdAt = element.createdAt;
-			task.updatedAt = element.updatedAt;
+		for (let element of data) {
+			let task = new Task(element.description);
+			task.setId(element.id);
+			task.setCreatedAt(element.setCreatedAt);
+			task.setUpdatedAt(element.setUpdatedAt);
 			list.push(task);
-		});
+		}
 		return list;
 	}
 
-	save(data) {
+	listAll() {
 		let currentList = this.getList();
-		let task = new Task();
-		task.id = currentList.length + 1;
-		task.description = task.stringBuilder(data);
-		task.createdAt = new Date();
-		task.updatedAt = new Date();
-		currentList.push(task);
-		fs.writeFileSync(this.filePath, JSON.stringify(currentList));
-		return this.getList().slice(-1)[0];
+		let taskList = new Array();
+		for (let task of currentList) taskList.push(task.description);
+		return taskList;
+	}
+
+	add(task) {
+		let description = task[0];
+		let newTask = new Task(description);
+		newTask.setCreatedAt(new Date().toISOString().slice(0, 10));
+		let result = this.save(newTask);
+		return result.description;
+	}
+
+	save(task) {
+		let list = new Array();
+		list = this.getList();
+		if (!task.id) task.setId(list.length + 1);
+		task.setUpdatedAt();
+		list.push(task);
+		fs.writeFileSync(this.filePath, JSON.stringify(list));
+		let result = this.getList().slice(-1)[0];
+		return result;
 	}
 }
 module.exports = Repository;
