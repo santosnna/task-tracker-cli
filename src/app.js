@@ -7,8 +7,6 @@ let repo = new Repository(filePath);
 let argv = process.argv.slice(2);
 let operation = argv[0];
 let input = argv.slice(1);
-// criar input validation para add e update
-// verificar caso não esteja entre aspas.
 
 switch (operation) {
 	case "add":

@@ -1,12 +1,37 @@
+/**
+ * REPOSITORY CLASS
+ * Repository of functions to access and modify data
+ *
+ * @param {String} filePath file path to document location
+ */
+
 const fs = require("fs");
 const Task = require("./Task");
+
+/**
+ * TO DO
+ * - update function
+ * * - update description
+ * * - mark as to-do
+ * * - mark as in-progress
+ * * - mark as done
+ * - delete function
+ * - create input validation (add/update functions)
+ * * - check if input is inside quotes ("") or not
+ * - create JSON document if it does not exist
+ * - adapt functions to work assynchronously (maybe)
+ * - test all functions
+ */
 
 class Repository {
 	constructor(filePath) {
 		this.filePath = filePath;
 	}
 
-	// Access list file
+	/**
+	 * Retrieves data from database
+	 * @returns {Array<Task>} list
+	 */
 	getList() {
 		let list = new Array();
 		let data = JSON.parse(fs.readFileSync(this.filePath));
@@ -20,6 +45,10 @@ class Repository {
 		return list;
 	}
 
+	/**
+	 * Builds list with more relevant data
+	 * @returns {Array<Task>} taskList
+	 */
 	listAll() {
 		let currentList = this.getList();
 		let taskList = new Array();
@@ -27,6 +56,11 @@ class Repository {
 		return taskList;
 	}
 
+	/**
+	 * Creates a new database entry
+	 * @param {Array<String>} task
+	 * @returns description of the task that was created
+	 */
 	add(task) {
 		let description = task[0];
 		let newTask = new Task(description);
@@ -35,6 +69,11 @@ class Repository {
 		return result.description;
 	}
 
+	/**
+	 * Persists data to database
+	 * @param {Task} task
+	 * @returns result, the last task entry in database
+	 */
 	save(task) {
 		let list = new Array();
 		list = this.getList();
