@@ -16,16 +16,34 @@ const Task = require("./Task");
  * * - mark as in-progress
  * * - mark as done
  * - delete function
- * - create input validation (add/update functions)
- * * - check if input is inside quotes ("") or not
- * - create JSON document if it does not exist
  * - adapt functions to work assynchronously (maybe)
  * - test all functions
+ * - USE fs.write() to use Streams
  */
 
 class Repository {
 	constructor(filePath) {
 		this.filePath = filePath;
+
+		try {
+			fs.readFileSync(this.filePath);
+		} catch (error) {
+			if (error.code === "ENOENT") {
+				fs.writeFileSync(this.filePath, "[]"); // create file with empty array
+			}
+		}
+	}
+
+	validate(array) {
+		let str = "";
+		if (array.length > 1) {
+			for (let el of array) {
+				str += `${el} `;
+			}
+			return str;
+		} else {
+			return array;
+		}
 	}
 
 	/**
@@ -35,6 +53,7 @@ class Repository {
 	getList() {
 		let list = new Array();
 		let data = JSON.parse(fs.readFileSync(this.filePath));
+
 		for (let element of data) {
 			let task = new Task(element.description);
 			task.setId(element.id);
@@ -58,11 +77,10 @@ class Repository {
 
 	/**
 	 * Creates a new database entry
-	 * @param {Array<String>} task
+	 * @param {Array<String>} description
 	 * @returns description of the task that was created
 	 */
-	add(task) {
-		let description = task[0];
+	add(description) {
 		let newTask = new Task(description);
 		newTask.setCreatedAt(new Date().toISOString().slice(0, 10));
 		let result = this.save(newTask);
