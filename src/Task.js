@@ -1,26 +1,42 @@
 class Task {
-	constructor(description) {
-		this.id;
+	constructor(id, description) {
+		this.id = id;
 		this.description = description;
+		this.status = "todo";
 		this.createdAt;
 		this.updatedAt;
+	}
+
+	getId() {
+		return this.id;
 	}
 
 	setId(id) {
 		this.id = id;
 	}
 
+	getDescription() {
+		return this.description;
+	}
+
 	setDescription(description) {
 		this.description = description;
 	}
 
-	setCreatedAt(creationDate) {
-		this.createdAt = creationDate;
+	setStatus(newStatus) {
+		this.status = newStatus;
 	}
 
-	setUpdatedAt() {
-		let updateDate = new Date().toISOString();
-		this.updatedAt = updateDate;
+	getCreatedAt() {
+		return this.createdAt;
+	}
+
+	setCreatedAt(date) {
+		this.createdAt = date;
+	}
+
+	updatedAt() {
+		this.updatedAt = new Date().toISOString();
 	}
 }
 

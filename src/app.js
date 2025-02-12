@@ -2,25 +2,30 @@ const path = require("path");
 const filePath = path.join(__dirname, "todolist.json");
 const Repository = require("./Repository");
 
+let validate = function (data) {
+	let validString = "";
+	if (!data.length > 1) {
+		return data[0];
+	}
+	for (let piece of data) {
+		validString += `${piece} `;
+	}
+	return validString;
+};
+
 let repository = new Repository(filePath);
-let argv = process.argv.slice(2);
-let operation = argv[0];
-let input = repository.validate(argv.slice(1));
+let arg = process.argv.slice(2);
+let operation = arg[0];
+let input = validate(arg.slice(1));
+let output = "";
 
 switch (operation) {
 	case "add":
-		let task = repository.add(input);
-		process.stdout.write(`Added ${JSON.stringify(task)}\n`);
+		let result = repository.add(input);
+		let addedTask = result.slice(-1)[0];
+		output = `Task successfully added (ID: ${addedTask.id})`;
+		process.stdout.write(output);
 		break;
-
-	case "list":
-		let list = repository.listAll();
-		process.stdout.write(`List All:\n`);
-		for (let task of list) {
-			process.stdout.write(`${JSON.stringify(task)}\t`);
-		}
-		break;
-
 	default:
 		break;
 }
